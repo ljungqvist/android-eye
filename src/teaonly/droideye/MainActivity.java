@@ -32,18 +32,11 @@ import android.view.View.OnClickListener;
 import android.view.Window;
 import android.view.WindowManager;
 import android.widget.Button;
-import android.widget.LinearLayout;
 import android.widget.TextView;
-
-import com.google.ads.AdRequest;
-import com.google.ads.AdSize;
-import com.google.ads.AdView;
 
 public class MainActivity extends Activity 
     implements View.OnTouchListener, CameraView.CameraReadyCallback, OverlayView.UpdateDoneCallback{
     private static final String TAG = "TEAONLY";
-
-    private AdView adView;
 
     boolean inProcessing = false;
     final int maxVideoNumber = 3;
@@ -70,12 +63,6 @@ public class MainActivity extends Activity
         //win.setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN); 
 
         setContentView(R.layout.main);
-
-        //setup adView
-        LinearLayout layout = (LinearLayout)findViewById(R.id.layout_setup);
-        adView = new AdView(this, AdSize.BANNER, "a1507f940fc****");
-        layout.addView(adView);
-        adView.loadAd(new AdRequest());
 
         btnExit = (Button)findViewById(R.id.btn_exit);
         btnExit.setOnClickListener(exitAction);
@@ -174,7 +161,7 @@ public class MainActivity extends Activity
 
     private void initCamera() {
         SurfaceView cameraSurface = (SurfaceView)findViewById(R.id.surface_camera);
-        cameraView_ = new CameraView(cameraSurface);        
+        cameraView_ = new CameraView(cameraSurface, this);        
         cameraView_.setCameraReadyCallback(this);
 
         overlayView_ = (OverlayView)findViewById(R.id.surface_overlay);

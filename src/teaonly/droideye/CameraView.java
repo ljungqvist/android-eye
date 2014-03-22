@@ -1,16 +1,14 @@
 package teaonly.droideye;
 
+import java.util.List;
+
+import android.content.Context;
 import android.hardware.Camera;
 import android.hardware.Camera.PreviewCallback;
-import android.hardware.Camera.PictureCallback;
-import android.hardware.Camera.AutoFocusCallback;
 import android.util.Log;
-import android.view.MotionEvent;
 import android.view.SurfaceHolder;
-import android.view.SurfaceHolder.Callback;
 import android.view.SurfaceView;
-
-import java.util.*;
+import android.widget.Toast;
 
 public class CameraView implements SurfaceHolder.Callback{
     public static interface CameraReadyCallback { 
@@ -25,9 +23,12 @@ public class CameraView implements SurfaceHolder.Callback{
     private List<Camera.Size> supportedSizes; 
     private Camera.Size procSize_;
     private boolean inProcessing_ = false;
+    
+    Context context;
 
-    public CameraView(SurfaceView sv){
+    public CameraView(SurfaceView sv, Context context){
         surfaceView_ = sv;
+        this.context = context;
 
         surfaceHolder_ = surfaceView_.getHolder();
         surfaceHolder_.setType(SurfaceHolder.SURFACE_TYPE_PUSH_BUFFERS);
@@ -86,7 +87,13 @@ public class CameraView implements SurfaceHolder.Callback{
     }
 
     private void setupCamera() {
-        camera_ = Camera.open();
+    	try {
+    		camera_ = Camera.open(0);
+    	} catch (Exception e) {
+    		Log.e("android-eye", "Camera not free", e);
+    		Toast.makeText(context, R.string.no_camera, Toast.LENGTH_LONG).show();
+    		return;
+    	}
         procSize_ = camera_.new Size(0, 0);
         Camera.Parameters p = camera_.getParameters();        
        

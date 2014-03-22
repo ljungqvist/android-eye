@@ -2,32 +2,30 @@ package teaonly.droideye;
 
 import java.io.BufferedReader;
 import java.io.ByteArrayInputStream;
+import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.FileInputStream;
+import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.OutputStream;
 import java.io.PrintWriter;
+import java.io.UnsupportedEncodingException;
 import java.net.ServerSocket;
 import java.net.Socket;
 import java.net.URLEncoder;
 import java.util.Date;
 import java.util.Enumeration;
-import java.util.Vector;
 import java.util.Hashtable;
 import java.util.Locale;
 import java.util.Properties;
 import java.util.StringTokenizer;
 import java.util.TimeZone;
+import java.util.Vector;
 
-import java.io.ByteArrayOutputStream;
-import java.io.FileOutputStream;
-
-import android.content.res.Resources;
 import android.content.res.AssetManager;
-import android.content.res.AssetFileDescriptor;
-import android.util.Log;
+import android.util.Xml.Encoding;
 
 /**
  * A simple, tiny, nicely embeddable HTTP 1.0 (partially 1.1) server in Java
@@ -93,7 +91,7 @@ public class NanoHTTPD
 	{
 		System.out.println( method + " '" + uri + "' " );
 
-		Enumeration e = header.propertyNames();
+		Enumeration<?> e = header.propertyNames();
 		while ( e.hasMoreElements())
 		{
 			String value = (String)e.nextElement();
@@ -643,7 +641,7 @@ public class NanoHTTPD
 		{
 			int matchcount = 0;
 			int matchbyte = -1;
-			Vector matchbytes = new Vector();
+			Vector<Integer> matchbytes = new Vector<Integer>();
 			for (int i=0; i<b.length; i++)
 			{
 				if (b[i] == boundary[matchcount])
@@ -653,7 +651,7 @@ public class NanoHTTPD
 					matchcount++;
 					if (matchcount==boundary.length)
 					{
-						matchbytes.addElement(new Integer(matchbyte));
+						matchbytes.addElement(Integer.valueOf(matchbyte));
 						matchcount = 0;
 						matchbyte = -1;
 					}
@@ -804,7 +802,7 @@ public class NanoHTTPD
 
 				if ( header != null )
 				{
-					Enumeration e = header.keys();
+					Enumeration<Object> e = header.keys();
 					while ( e.hasMoreElements())
 					{
 						String key = (String)e.nextElement();
@@ -870,7 +868,11 @@ public class NanoHTTPD
 				newUri += "%20";
 			else
 			{
-				newUri += URLEncoder.encode( tok );
+				try {
+					newUri += URLEncoder.encode( tok , Encoding.UTF_8.toString());
+				} catch (UnsupportedEncodingException e) {
+					e.printStackTrace();
+				}
 				// For Java 1.4 you'll want to use this instead:
 				// try { newUri += URLEncoder.encode( tok, "UTF-8" ); } catch ( java.io.UnsupportedEncodingException uee ) {}
 			}
@@ -1198,7 +1200,7 @@ public class NanoHTTPD
 	/**
 	 * Hashtable mapping (String)FILENAME_EXTENSION -> (String)MIME_TYPE
 	 */
-	private static Hashtable theMimeTypes = new Hashtable();
+	private static Hashtable<String, String> theMimeTypes = new Hashtable<String, String>();
 	static
 	{
 		StringTokenizer st = new StringTokenizer(

@@ -6,7 +6,10 @@
 
     <string name="msg_access_local">Open at local: </string>
     <string name="msg_access_internet">Open at internet:  </string>
-    <string name="msg_access_query">Detecting internet ... </string>
+    <string name="msg_access_query">Detecting internet &#8230; </string>
     <string name="msg_access_query_error">Also you can setup your router to access from internet</string>
     <string name="msg_error">Error: Please enable wifi</string>
+    
+    <string name="no_camera">Another app is using the camera. Close all other running camera apps.</string>
+    
 </resources>
