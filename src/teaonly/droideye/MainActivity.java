@@ -1,62 +1,43 @@
 package teaonly.droideye;
-import teaonly.droideye.*;
-
 import java.io.IOException;
-import java.io.File;
-import java.io.FileOutputStream;
-import java.io.OutputStream;
 import java.io.InputStream;
-import java.io.ByteArrayInputStream;
-import java.lang.System;
-import java.lang.Thread;
-import java.util.*;
-import java.net.*;
+import java.io.OutputStream;
+import java.net.InetAddress;
+import java.net.NetworkInterface;
+import java.net.SocketException;
 import java.nio.ByteBuffer;
-import java.nio.IntBuffer;
-import  org.apache.http.conn.util.InetAddressUtils;
+import java.util.Enumeration;
+import java.util.List;
+import java.util.Properties;
+import java.util.Random;
+
+import org.apache.http.conn.util.InetAddressUtils;
 
 import android.app.Activity;
-import android.app.AlertDialog;
-import android.app.AlertDialog.Builder;
-import android.app.ProgressDialog;
-import android.content.res.Resources;
-import android.content.res.AssetManager;
-import android.content.res.AssetFileDescriptor;
-import android.hardware.Camera;
-import android.hardware.Camera.PreviewCallback;
-import android.hardware.Camera.PictureCallback;
-import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
-import android.graphics.Bitmap.CompressFormat;
-import android.graphics.Canvas;
-import android.graphics.Color;
 import android.graphics.ImageFormat;
 import android.graphics.Rect;
-import android.graphics.Paint;
 import android.graphics.YuvImage;
-import android.content.Intent;
-import android.os.Bundle;
-import android.os.Environment;
-import android.os.Handler;
-import android.os.Looper;
+import android.hardware.Camera;
+import android.hardware.Camera.PreviewCallback;
 import android.media.AudioFormat;
-import android.media.MediaRecorder;
 import android.media.AudioRecord;
-import android.text.format.Formatter;
-import android.view.LayoutInflater;
+import android.media.MediaRecorder;
+import android.os.Bundle;
+import android.os.Handler;
+import android.util.Log;
+import android.view.MotionEvent;
+import android.view.SurfaceView;
 import android.view.View;
 import android.view.View.OnClickListener;
-import android.view.MotionEvent;
 import android.view.Window;
 import android.view.WindowManager;
-import android.view.SurfaceView;
-import android.util.Log;
-import android.widget.LinearLayout; 
-import android.widget.ImageButton;
 import android.widget.Button;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
-import com.google.ads.*;
+import com.google.ads.AdRequest;
+import com.google.ads.AdSize;
+import com.google.ads.AdView;
 
 public class MainActivity extends Activity 
     implements View.OnTouchListener, CameraView.CameraReadyCallback, OverlayView.UpdateDoneCallback{
